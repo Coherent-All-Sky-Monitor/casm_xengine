@@ -76,7 +76,7 @@ process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
 # Parse timing output with timeout
 line_count = 0
 start_time = time.time()
-timeout_seconds = 60  # 1 minute timeout
+timeout_seconds = 10  # 1 minute timeout
 
 print("Monitoring beamformer output...")
 print("(Press Ctrl+C to stop early)")
