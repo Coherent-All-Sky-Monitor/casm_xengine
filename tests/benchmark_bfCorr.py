@@ -31,7 +31,7 @@ os.system("dada_db -k dddd -b 16777216 -n 4")
 
 # Start fake_writer (exact working command)
 print("Starting fake_writer...")
-os.system("./src/fake_writer &")
+os.system("./fake_writer &")
 time.sleep(2)
 
 # Start beamformer and capture output
@@ -47,7 +47,7 @@ total_times = []
 real_time_ratios = []
 
 # Run beamformer (exact working command)
-cmd = "./src/casm_bfCorr -b -i daaa -o dddd -f src/empty.flags -a src/dummy.calib -p src/powers.out"
+cmd = "./casm_bfCorr -b -i daaa -o dddd -f empty.flags -a dummy.calib -p powers.out"
 process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 # Parse timing output
