@@ -56,7 +56,26 @@ else:
     fake_writer_cmd = f"{dir}/fake_writer"
     fake_writer_process = subprocess.Popen(fake_writer_cmd, shell=True)
     print(f"Started fake_writer with PID: {fake_writer_process.pid}")
+    
+    # Check if fake_writer is running
+    time.sleep(2)
+    try:
+        # Check if process is still running
+        if fake_writer_process.poll() is None:
+            print("✅ fake_writer is running")
+        else:
+            print("❌ fake_writer has stopped")
+            print(f"Return code: {fake_writer_process.returncode}")
+    except Exception as e:
+        print(f"⚠️  Error checking fake_writer status: {e}")
+
 time.sleep(2)  # Give more time for processes to start
+
+# Check DADA database status
+print("\nChecking DADA database status...")
+os.system(f"dada_db -k {in_key} -s")
+os.system(f"dada_db -k {out_key} -s")
+print()
 
 # Start beamformer and capture output
 print("Starting beamformer...")
