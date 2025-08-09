@@ -3,8 +3,6 @@ import time
 import re
 import subprocess
 import statistics
-import signal
-import psutil
 from datetime import datetime
 
 junkdb = False
@@ -41,41 +39,21 @@ try:
 except Exception:
     pass
 
-# Create new databases
+# Create new databases (matching the working manual approach)
 print("Creating DADA databases...")
 os.system(f"dada_db -k {in_key} -b {in_block_size} -n 4")
 os.system(f"dada_db -k {out_key} -b {out_block_size} -n 4")
 time.sleep(1)
 
-# Start data generation
+# Start data generation (simple approach like manual)
 print("Starting data generation...")
 if junkdb:
     os.system(f"dada_junkdb -k {in_key} -t 3600 header.txt")
 else:
-    # Start fake_writer in background and capture its PID
-    fake_writer_cmd = f"{dir}/fake_writer"
-    fake_writer_process = subprocess.Popen(fake_writer_cmd, shell=True)
-    print(f"Started fake_writer with PID: {fake_writer_process.pid}")
-    
-    # Check if fake_writer is running
-    time.sleep(2)
-    try:
-        # Check if process is still running
-        if fake_writer_process.poll() is None:
-            print("✅ fake_writer is running")
-        else:
-            print("❌ fake_writer has stopped")
-            print(f"Return code: {fake_writer_process.returncode}")
-    except Exception as e:
-        print(f"⚠️  Error checking fake_writer status: {e}")
-
-time.sleep(2)  # Give more time for processes to start
-
-# Check DADA database status
-print("\nChecking DADA database status...")
-os.system(f"dada_db -k {in_key} -s")
-os.system(f"dada_db -k {out_key} -s")
-print()
+    # Start fake_writer in background (simple approach)
+    os.system(f"{dir}/fake_writer &")
+    print("Started fake_writer in background")
+time.sleep(2)
 
 # Start beamformer and capture output
 print("Starting beamformer...")
@@ -89,7 +67,7 @@ output_times = []
 total_times = []
 real_time_ratios = []
 
-# Run beamformer and capture output
+# Run beamformer and capture output (matching manual approach)
 cmd = (f"{dir}/casm_bfCorr -b -i {in_key} -o {out_key} "
        f"-f {dir}/empty.flags -a {dir}/dummy.calib -p {dir}/powers.out")
 process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
@@ -99,7 +77,6 @@ process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
 line_count = 0
 start_time = time.time()
 timeout_seconds = 60  # 1 minute timeout
-last_output_time = time.time()
 
 print("Monitoring beamformer output...")
 print("(Press Ctrl+C to stop early)")
@@ -107,7 +84,6 @@ print("(Press Ctrl+C to stop early)")
 try:
     for line in process.stderr:
         current_time = time.time()
-        last_output_time = current_time
         
         # Check for timeout
         if current_time - start_time > timeout_seconds:
@@ -165,22 +141,8 @@ finally:
     except subprocess.TimeoutExpired:
         process.kill()
     
-    # Kill fake_writer if it's still running
-    if not junkdb and 'fake_writer_process' in locals():
-        try:
-            fake_writer_process.terminate()
-            fake_writer_process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            fake_writer_process.kill()
-    
     # Kill any remaining fake_writer processes
-    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
-        try:
-            if 'fake_writer' in str(proc.info['cmdline']):
-                print(f"Killing fake_writer process {proc.info['pid']}")
-                proc.terminate()
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            pass
+    os.system("pkill -f fake_writer")
 
 end_time = time.time()
 
