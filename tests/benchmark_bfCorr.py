@@ -8,7 +8,7 @@ from datetime import datetime
 # Configuration
 NPACKETS_PER_BLOCK = 2048
 NANTS = 256
-NBEAMS = 1024
+NBEAMS = 256
 NCHAN_PER_PACKET = 512
 SAMPLING_TIME_US = 12  # microseconds per sample
 
@@ -53,8 +53,14 @@ process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subpr
 # Parse timing output
 line_count = 0
 start_time = time.time()
+timeout_seconds = 60  # 1 minute timeout
 
 for line in process.stderr:
+    # Check for timeout
+    if time.time() - start_time > timeout_seconds:
+        print(f"\n⚠️  Timeout reached ({timeout_seconds}s). Stopping benchmark.")
+        process.terminate()
+        break
     if "spent time" in line:
         line_count += 1
         
