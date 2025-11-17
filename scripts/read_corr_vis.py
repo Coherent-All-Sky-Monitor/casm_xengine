@@ -266,6 +266,7 @@ def main():
         sys.exit(2)
     
     for jj,fp in enumerate(files):
+        print(fp)
         print(f"Processing file {jj} of {len(files)}")
         try:
             vis, nfreq = load_vis(fp, nt=args.nt, nin=args.nin, dtype=args.dtype, 
