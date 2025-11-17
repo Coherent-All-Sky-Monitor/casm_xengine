@@ -264,7 +264,8 @@ def main():
         print(f"No files found under {args.data_dir} with glob '{args.glob}'.", file=sys.stderr)
         sys.exit(2)
 
-    vis_all = None
+    vis_all = []
+    
     for jj,fp in enumerate(files):
         try:
             vis, nfreq = load_vis(fp, nt=args.nt, nin=args.nin, dtype=args.dtype, 
