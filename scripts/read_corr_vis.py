@@ -263,8 +263,6 @@ def main():
     if not files:
         print(f"No files found under {args.data_dir} with glob '{args.glob}'.", file=sys.stderr)
         sys.exit(2)
-
-    vis_all = []
     
     for jj,fp in enumerate(files):
         try:
@@ -275,6 +273,9 @@ def main():
             continue
 
         if args.append:
+            if jj == 0:
+                vis_all = vis
+
             vis_all = np.concatenate([vis_all, vis], axis=0)
             print(f"Appended {vis.shape[0]} files")
             print(f"New shape: {vis.shape}")
