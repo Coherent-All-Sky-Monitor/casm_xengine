@@ -267,7 +267,7 @@ def main():
         sys.exit(2)
     
     for jj,fp in enumerate(files):
-        fp = Path(f"/home/casm/data/corrs_64sec_int_20251116/snap_13000/corrs_20251116-20:34:57.dat.{jj + 0}")
+        fp = Path(f"/home/casm/data/corrs_4sec_int_20251113/snap_13000/corrs_20251114-13:12:55.dat.{jj + 0}")
         print(f"Processing file {jj} of {len(files)}")
         print(fp)
         # Getting the time from the file
