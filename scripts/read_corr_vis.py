@@ -276,7 +276,6 @@ def main():
         if args.append:
             if jj == 0:
                 vis_all = vis[:,:,args.waterfall[0],args.waterfall[1]]
-                continue
             else:
                 vis_all = np.concatenate([vis_all, vis[:,:,args.waterfall[0],args.waterfall[1]]], axis=0)
             print(f"Appended {vis.shape[0]} files")
@@ -287,6 +286,7 @@ def main():
                 print(vis_all.shape)
                 np.save('vis_all.npy', vis_all)
                 break
+            continue
 
         nt, nf, ni, nj = vis.shape
         assert ni == nj == args.nin
