@@ -267,9 +267,11 @@ def main():
         sys.exit(2)
     
     for jj,fp in enumerate(files):
-        fp = Path(f"/home/casm/data/corrs_4sec_int_20251113/snap_13000/corrs_20251114-13:12:55.dat.{jj + 130}")
+        fp = Path(f"/home/casm/data/corrs_4sec_int_20251113/snap_13000/corrs_20251114-13:12:55.dat.{jj + 90}")
         print(f"Processing file {jj} of {len(files)}")
         print(fp)
+        # Getting the time from the file
+        time = fp.stem.split('-')[1].split(':')[0]
 
         try:
             vis, nfreq = load_vis(fp, nt=args.nt, nin=args.nin, dtype=args.dtype, 
