@@ -266,8 +266,10 @@ def main():
         sys.exit(2)
     
     for jj,fp in enumerate(files):
-        print(fp)
+        fp = f"~/data/corrs_4sec_int_20251113/snap_13000/corrs_20251114-13:12:55.dat.{jj + 130}"
         print(f"Processing file {jj} of {len(files)}")
+        print(fp)
+        
         try:
             vis, nfreq = load_vis(fp, nt=args.nt, nin=args.nin, dtype=args.dtype, 
             big_endian=args.big_endian, mmap=not args.no_mmap)
