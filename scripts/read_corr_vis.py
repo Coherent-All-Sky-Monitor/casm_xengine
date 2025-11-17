@@ -237,7 +237,8 @@ def main():
     p.add_argument('--glob', default='*', help='Glob to select files within data_dir (default: * )')
     p.add_argument('--nt', type=int, default=16384, help='Number of time integrations per file (default: 16384)')
     p.add_argument('--nin', type=int, default=4, help='Number of inputs (default: 4)')
-    p.add_argument('--dtype', default='float32', choices=['float16','float32','float64','int16','int32','int64'], help='Scalar dtype per real/imag value (default: float32)')
+    p.add_argument('--dtype', default='float32', choices=['float16','float32','float64','int16','int32','int64'], 
+                    help='Scalar dtype per real/imag value (default: float32)')
     p.add_argument('--big-endian', action='store_true', help='Interpret data as big-endian (default little-endian)')
     p.add_argument('--no-mmap', action='store_true', help='Disable memmap and read fully into RAM')
     p.add_argument('--labels', nargs='*', default=None, help='Input labels for axes, e.g. --labels 0 9 10 11')
@@ -274,9 +275,9 @@ def main():
 
         if args.append:
             if jj == 0:
-                vis_all = vis
+                vis_all = vis[:,:,args.waterfall[0],args.waterfall[1]]
 
-            vis_all = np.concatenate([vis_all, vis], axis=0)
+            vis_all = np.concatenate([vis_all, vis[:,:,args.waterfall[0],args.waterfall[1]]], axis=0)
             print(f"Appended {vis.shape[0]} files")
             print(f"New shape: {vis.shape}")
             print(jj)
