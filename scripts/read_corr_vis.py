@@ -266,7 +266,7 @@ def main():
         sys.exit(2)
     
     for jj,fp in enumerate(files):
-        fp = f"/home/casm/data/corrs_4sec_int_20251113/snap_13000/corrs_20251114-13:12:55.dat.{jj + 130}"
+        fp = glob.glob(f"/home/casm/data/corrs_4sec_int_20251113/snap_13000/corrs_20251114-13:12:55.dat.{jj + 130}")[0]
         print(f"Processing file {jj} of {len(files)}")
         print(fp)
 
