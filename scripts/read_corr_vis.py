@@ -276,8 +276,9 @@ def main():
         if args.append:
             if jj == 0:
                 vis_all = vis[:,:,args.waterfall[0],args.waterfall[1]]
-
-            vis_all = np.concatenate([vis_all, vis[:,:,args.waterfall[0],args.waterfall[1]]], axis=0)
+                continue
+            else:
+                vis_all = np.concatenate([vis_all, vis[:,:,args.waterfall[0],args.waterfall[1]]], axis=0)
             print(f"Appended {vis.shape[0]} files")
             print(f"New shape: {vis.shape}")
             print(jj)
