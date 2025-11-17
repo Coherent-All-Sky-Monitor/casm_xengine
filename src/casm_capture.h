@@ -31,6 +31,17 @@
 
 #include "casm_def.h"
 
+// Missing type and function definitions
+typedef struct {
+  uint64_t total;
+  uint64_t received;
+  uint64_t dropped;
+  uint64_t errors;
+} stats_t;
+
+stats_t* init_stats_t(void);
+void reset_stats_t(stats_t* stats);
+
 #define DSAX_UDPDB_BUF_CLEAR = 0
 #define DSAX_UDPDB_BUF_FULL = 1
 

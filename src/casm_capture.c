@@ -87,6 +87,34 @@ int check_network_interface(const char* interface);
 int check_socket_data_available(int sock_fd);
 void print_socket_diagnostics(int sock_fd, const char* interface, int port);
 
+// Missing type and function definitions
+typedef struct {
+  uint64_t total;
+  uint64_t received;
+  uint64_t dropped;
+  uint64_t errors;
+} stats_t;
+
+stats_t* init_stats_t() {
+  stats_t* stats = (stats_t*)malloc(sizeof(stats_t));
+  if (stats) {
+    stats->total = 0;
+    stats->received = 0;
+    stats->dropped = 0;
+    stats->errors = 0;
+  }
+  return stats;
+}
+
+void reset_stats_t(stats_t* stats) {
+  if (stats) {
+    stats->total = 0;
+    stats->received = 0;
+    stats->dropped = 0;
+    stats->errors = 0;
+  }
+}
+
 void dsaX_dbgpu_cleanup (dada_hdu_t * out)
 {
 
@@ -1197,7 +1225,7 @@ int main (int argc, char *argv[]) {
 	  got = recvfrom ( udpdb.sock->fd, udpdb.sock->buf, UDP_PAYLOAD, 0, NULL, NULL );
 
 	  //log_packet_details(udpdb.sock->buf, got);
-	  //syslog(LOG_INFO, "Received packet of size %zd", got);
+	  syslog(LOG_INFO, "Received packet of size %zd", got);
 	  
 	  if (got == UDP_PAYLOAD) 
 	    {

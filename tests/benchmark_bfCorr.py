@@ -71,7 +71,6 @@ print("Creating DADA databases...")
 os.system(f"dada_db -k {in_key} -b {in_block_size} -n 4")
 os.system(f"dada_db -k {out_key} -b {out_block_size} -n 4")
 
-
 # Start data generation
 print("Starting data generation...")
 if junkdb:
