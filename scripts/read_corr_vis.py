@@ -286,6 +286,8 @@ def main():
             print(f"Appended {vis.shape[0]} files")
             print(f"New shape: {vis.shape}")
             print(jj)
+            if jj % 10 == 0:
+                np.save('vis_all.npy', vis_all)
             if jj == len(files)-1:
                 print(f"Reached end of files, stopping appending")
                 print(vis_all.shape)
