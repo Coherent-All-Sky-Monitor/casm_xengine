@@ -251,8 +251,11 @@ def main():
     p.add_argument('--matrix-phase', action='store_true', help='Plot avg 4×4 matrix of phase (radians)')
     p.add_argument('--waterfall', nargs=2, type=int, metavar=('I','J'), help='Plot a time–freq waterfall for baseline (I,J)')
     p.add_argument('--quantity', default='amp', choices=['amp','phase','real','imag'], help='Quantity for waterfall (default: amp)')
-
     p.add_argument('--dry-run', action='store_true', help='Do not plot; just print inferred metadata per file')
+
+    # Boolean argument to append multiple files to look at time dependence over hours
+    p.add_argument('--append', action='store_true', help='Append multiple files to look at time dependence over hours')
+
 
     args = p.parse_args()
     
@@ -261,12 +264,25 @@ def main():
         print(f"No files found under {args.data_dir} with glob '{args.glob}'.", file=sys.stderr)
         sys.exit(2)
 
+    vis_all = None
     for jj,fp in enumerate(files):
         try:
-            vis, nfreq = load_vis(fp, nt=args.nt, nin=args.nin, dtype=args.dtype, big_endian=args.big_endian, mmap=not args.no_mmap)
+            vis, nfreq = load_vis(fp, nt=args.nt, nin=args.nin, dtype=args.dtype, 
+            big_endian=args.big_endian, mmap=not args.no_mmap)
         except Exception as e:
             print(f"[ERROR] {fp.name}: {e}", file=sys.stderr)
             continue
+
+        if args.append:
+            vis_all = np.concatenate([vis_all, vis], axis=0)
+            print(f"Appended {vis.shape[0]} files")
+            print(f"New shape: {vis.shape}")
+            print(jj)
+            if jj > len(files):
+                print(f"Reached end of files, stopping appending")
+                print(vis_all.shape)
+                np.save('vis_all.npy', vis_all)
+                break
 
         nt, nf, ni, nj = vis.shape
         assert ni == nj == args.nin
