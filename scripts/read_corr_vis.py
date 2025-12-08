@@ -276,7 +276,7 @@ def main():
         try:
             vis, nfreq = load_vis(fp, nt=args.nt, nin=args.nin, dtype=args.dtype, 
             big_endian=args.big_endian, mmap=not args.no_mmap)
-            np.save('vis.npy', vis)
+            #np.save('vis.npy', vis)
         except Exception as e:
             print(f"[ERROR] {fp.name}: {e}", file=sys.stderr)
             continue
