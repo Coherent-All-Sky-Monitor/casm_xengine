@@ -221,11 +221,11 @@ def plot_waterfall(
     ax1.set_title(title or f"Baseline ({i},{j}) t[{t0}:{t1}) chan[{c0}:{c1})")
 
     # Second subplot
-    ax2.plot(freq_axis_mhz[::-1], np.mean(Z, 0), c='k')
-    ax2.set_title('Vis %d %d' % (i, j))
-    ax2.set_xlabel('Freq (MHz)')
-    ax2.set_ylabel('Amplitude (dB)')
-    ax2.set_xlim(freq_axis_mhz.min(), freq_axis_mhz.max())
+#    ax2.plot(freq_axis_mhz[::-1], np.mean(Z, 0), c='k')
+#    ax2.set_title('Vis %d %d' % (i, j))
+#    ax2.set_xlabel('Freq (MHz)')
+#    ax2.set_ylabel('Amplitude (dB)')
+#    ax2.set_xlim(freq_axis_mhz.min(), freq_axis_mhz.max())
 
     fig.tight_layout()
     plt.show()
